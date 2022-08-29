@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "873295036184",
+    "project_id": "weki-a783c",
+    "storage_bucket": "weki-a783c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873295036184:android:0e302f149ca5021ed0286d",
+        "android_client_info": {
+          "package_name": "com.example.weki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873295036184-9gtra13ghqbd2n156631lsufir7b6rb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD269iFO649idv3oQTzx5wFJuVkvOtUD6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873295036184-9gtra13ghqbd2n156631lsufir7b6rb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
