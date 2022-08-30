@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:weki/layout/cubit/cubit.dart';
 import 'package:weki/models/boarding/boarding.dart';
-import 'package:weki/modules/home/cubit/cubit.dart';
 import 'package:weki/modules/login/login.dart';
 import 'package:weki/shared/components/components.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';

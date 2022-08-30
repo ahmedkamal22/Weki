@@ -2,12 +2,13 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weki/modules/home/cubit/cubit.dart';
-import 'package:weki/modules/home/home.dart';
+import 'package:weki/layout/cubit/cubit.dart';
+import 'package:weki/layout/home.dart';
 import 'package:weki/modules/login/cubit/cubit.dart';
 import 'package:weki/modules/login/cubit/states.dart';
 import 'package:weki/modules/register/register.dart';
 import 'package:weki/shared/components/components.dart';
+import 'package:weki/shared/components/constants.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';
 import 'package:weki/shared/styles/colors.dart';
 
@@ -24,9 +25,13 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            CacheHelper.saveData(key: "token", value: true).then((value) {
+            CacheHelper.saveData(key: "uId", value: state.uId).then((value) {
+              uId = state.uId;
               navigateAndFinish(context: context, widget: HomeScreen());
             });
+          }
+          if (state is LoginFailureState) {
+            showToast(msg: state.error, state: ToastStates.Error);
           }
         },
         builder: (context, state) {
@@ -105,17 +110,23 @@ class LoginScreen extends StatelessWidget {
                           generalWidgetsColor: cubitColor,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
-                              .copyWith(
-                                  color: cubitColor,
-                                  fontWeight: FontWeight.normal),
-                          radius: 20.0,
-                          isPassword: cubit.isPassword,
-                          suffix: cubit.suffix,
-                          suffixPressed: () {
-                            cubit.changePasswordVisibility();
-                          },
-                        ),
+                                .bodyText1!
+                                .copyWith(
+                                    color: cubitColor,
+                                    fontWeight: FontWeight.normal),
+                            radius: 20.0,
+                            isPassword: cubit.isPassword,
+                            suffix: cubit.suffix,
+                            suffixPressed: () {
+                              cubit.changePasswordVisibility();
+                            },
+                            onSubmitted: (value) {
+                              if (formKey.currentState!.validate()) {
+                                cubit.userLogin(
+                                    email: emailController.text,
+                                    password: passwordController.text);
+                              }
+                            }),
                         SizedBox(
                           height: 25,
                         ),
