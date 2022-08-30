@@ -2,11 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weki/modules/home/cubit/cubit.dart';
-import 'package:weki/modules/home/home.dart';
+import 'package:weki/layout/cubit/cubit.dart';
+import 'package:weki/layout/home.dart';
 import 'package:weki/modules/register/cubit/cubit.dart';
 import 'package:weki/modules/register/cubit/states.dart';
 import 'package:weki/shared/components/components.dart';
+import 'package:weki/shared/components/constants.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -23,10 +24,14 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => RegisterCubit(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
-          if (state is RegisterSuccessState) {
-            CacheHelper.saveData(key: "token", value: true).then((value) {
+          if (state is RegisterCreateUserSuccessState) {
+            CacheHelper.saveData(key: "uId", value: state.uId).then((value) {
+              uId = state.uId;
               navigateAndFinish(context: context, widget: HomeScreen());
             });
+          }
+          if (state is RegisterCreateUserFailureState) {
+            showToast(msg: state.error, state: ToastStates.Error);
           }
         },
         builder: (context, state) {

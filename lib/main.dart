@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weki/layout/cubit/cubit.dart';
+import 'package:weki/layout/cubit/states.dart';
+import 'package:weki/layout/home.dart';
 import 'package:weki/modules/boarding/boarding.dart';
-import 'package:weki/modules/home/cubit/cubit.dart';
-import 'package:weki/modules/home/cubit/states.dart';
-import 'package:weki/modules/home/home.dart';
 import 'package:weki/modules/login/login.dart';
 import 'package:weki/shared/components/constants.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';
@@ -17,11 +17,11 @@ void main() async {
   await CacheHelper.init();
   await Firebase.initializeApp();
   var boarding = CacheHelper.getData(key: "boarding");
-  var token = CacheHelper.getData(key: "token");
+  uId = CacheHelper.getData(key: "uId");
   var isDark = CacheHelper.getData(key: "isDark");
   Widget widget;
   if (boarding != null) {
-    if (token != null) {
+    if (uId != null) {
       widget = HomeScreen();
     } else {
       widget = LoginScreen();
@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..changeMode(fromShared: isDark),
+      create: (context) => AppCubit()
+        ..changeMode(fromShared: isDark)
+        ..getUserData(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: lightTheme,
             darkTheme: darkTheme,
-            themeMode: cubit.isDark ? ThemeMode.light : ThemeMode.dark,
+            themeMode: cubit.isDark ? ThemeMode.dark : ThemeMode.light,
             home: startWidget,
           );
         },
