@@ -13,3 +13,7 @@ class AppGetDataFailureState extends AppStates {
 }
 
 class AppChangeModeState extends AppStates {}
+
+class AppChangeBottomNavState extends AppStates {}
+
+class AppNewPostState extends AppStates {}
