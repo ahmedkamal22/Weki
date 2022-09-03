@@ -32,6 +32,11 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {},
               icon: Icon(IconBroken.Search),
             ),
+            defaultTextButton(
+                onPressed: () {
+                  signOut(context: context);
+                },
+                text: "log out")
           ],
         ),
         body: cubit.screens[cubit.currentIndex],
