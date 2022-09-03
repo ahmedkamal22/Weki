@@ -20,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
               children: [
                 Image(
                   image: NetworkImage(
-                      "https://img.freepik.com/free-photo/young-business-woman-working-laptop-office_1303-22815.jpg?w=740&t=st=1661974951~exp=1661975551~hmac=ceb3f30e835a8c359daa5b08ab1ad2bfb61c476a0a5801ee7ff26b0c42cd87c7"),
+                      "https://img.freepik.com/free-photo/excited-happy-young-pretty-woman_171337-2005.jpg?w=740&t=st=1662053221~exp=1662053821~hmac=eae04ec0ca79550c2980c3ae952c870ceeb9b976040865bceb19c68638af4a29"),
                   width: double.infinity,
                   height: 220,
                   fit: BoxFit.cover,

@@ -65,6 +65,7 @@ class AppCubit extends Cubit<AppStates> {
   List<String> titels = [
     "Home",
     "Chats",
+    "Posts",
     "Users",
     "Settings",
   ];
