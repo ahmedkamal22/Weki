@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weki/modules/login/login.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';
+import 'package:weki/shared/styles/icon_broken.dart';
 
 navigateTo({required BuildContext context, required Widget widget}) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
@@ -158,3 +159,23 @@ signOut({
     navigateAndFinish(context: context, widget: LoginScreen());
   });
 }
+
+PreferredSizeWidget? defaultAppBar({
+  String? title,
+  List<Widget>? actions,
+  required BuildContext context,
+}) =>
+    AppBar(
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(IconBroken.Arrow___Left_2),
+      ),
+      titleSpacing: 5.0,
+      title: Text(
+        title!,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+      actions: actions,
+    );
