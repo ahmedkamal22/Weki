@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weki/shared/components/components.dart';
 
 class PostsScreen extends StatelessWidget {
   const PostsScreen({Key? key}) : super(key: key);
@@ -6,11 +7,9 @@ class PostsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Add Post",
-          style: Theme.of(context).textTheme.bodyText1,
-        ),
+      appBar: defaultAppBar(
+        context: context,
+        title: "Add Post",
       ),
     );
   }

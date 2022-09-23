@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:weki/layout/cubit/states.dart';
 import 'package:weki/models/user/user_model.dart';
 import 'package:weki/modules/chats/chats.dart';
@@ -92,4 +96,121 @@ class AppCubit extends Cubit<AppStates> {
       label: "Settings",
     ),
   ];
+
+  File? profileImage;
+  var picker = ImagePicker();
+
+  Future<void> getProfileImage() async {
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      print(pickedFile.path);
+      emit(AppGetProfileImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(AppGetProfileImagePickedFailureState());
+    }
+  }
+
+  File? coverImage;
+
+  Future<void> getCoverImage() async {
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      coverImage = File(pickedFile.path);
+      emit(AppGetCoverImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(AppGetCoverImagePickedFailureState());
+    }
+  }
+
+  uploadProfileImage({
+    required String name,
+    required String bio,
+    required String email,
+    required String phone,
+  }) {
+    emit(AppUpdateImageLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
+        .putFile(profileImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        updateData(
+          name: name,
+          bio: bio,
+          email: email,
+          phone: phone,
+          image: value,
+        );
+      }).catchError((error) {
+        print(error.toString());
+        emit(AppUploadProfileImageFailureState());
+      });
+    }).catchError((error) {
+      emit(AppUploadProfileImageFailureState());
+    });
+  }
+
+  uploadCoverImage({
+    required String name,
+    required String bio,
+    required String email,
+    required String phone,
+  }) {
+    emit(AppUpdateCoverLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("users/${Uri.file(coverImage!.path).pathSegments.last}")
+        .putFile(coverImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        updateData(
+            name: name, bio: bio, email: email, phone: phone, cover: value);
+      }).catchError((error) {
+        emit(AppUploadCoverImageFailureState());
+      });
+    }).catchError((error) {
+      emit(AppUploadCoverImageFailureState());
+    });
+  }
+
+  updateData({
+    required String name,
+    required String bio,
+    required String email,
+    required String phone,
+    String? image,
+    String? cover,
+  }) {
+    emit(AppUpdateDataLoadingState());
+    UserModel model = UserModel(
+      image: image ?? userModel!.image,
+      bio: bio,
+      cover: cover ?? userModel!.cover,
+      email: email,
+      name: name,
+      phone: phone,
+      uId: userModel!.uId,
+      isEmailVerified: false,
+    );
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userModel!.uId)
+        .update(model.toMap())
+        .then((value) {
+      getUserData();
+    }).catchError((error) {
+      emit(AppUpdateDataErrorState());
+    });
+  }
 }

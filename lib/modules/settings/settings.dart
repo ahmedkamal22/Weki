@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weki/layout/cubit/cubit.dart';
 import 'package:weki/layout/cubit/states.dart';
+import 'package:weki/modules/profile/edit_profile.dart';
+import 'package:weki/shared/components/components.dart';
 import 'package:weki/shared/styles/icon_broken.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -67,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .caption!
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
               Row(
@@ -143,7 +145,9 @@ class SettingsScreen extends StatelessWidget {
                     width: 10,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(context: context, widget: EditProfile());
+                    },
                     child: Icon(
                       IconBroken.Edit,
                       size: 16,
