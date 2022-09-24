@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:weki/layout/cubit/states.dart';
+import 'package:weki/models/post/post.dart';
 import 'package:weki/models/user/user_model.dart';
 import 'package:weki/modules/chats/chats.dart';
 import 'package:weki/modules/feeds/feeds.dart';
@@ -212,5 +213,67 @@ class AppCubit extends Cubit<AppStates> {
     }).catchError((error) {
       emit(AppUpdateDataErrorState());
     });
+  }
+
+  File? postImage;
+
+  Future<void> getPostImage() async {
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(AppGetPostImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(AppGetPostImagePickedFailureState());
+    }
+  }
+
+  uploadPost({
+    required postData,
+    required postText,
+  }) {
+    emit(AppCreatePostLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("posts/${Uri.file(postImage!.path).pathSegments.last}")
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((imageLink) {
+        createPost(
+            postData: postData, postText: postText, postImage: imageLink);
+        print(imageLink);
+      }).catchError((error) {
+        emit(AppCreatePostFailureState());
+      });
+    }).catchError((error) {
+      emit(AppCreatePostFailureState());
+    });
+  }
+
+  createPost({required postData, required postText, String? postImage}) {
+    PostsModel model = PostsModel(
+      name: userModel!.name,
+      image: userModel!.image,
+      postDate: postData,
+      postImage: postImage ?? "Without post image..",
+      postText: postText,
+      uId: userModel!.uId,
+    );
+    FirebaseFirestore.instance
+        .collection("posts")
+        .add(model.toMap()!)
+        .then((value) {
+      emit(AppCreatePostSuccessState());
+    }).catchError((error) {
+      emit(AppCreatePostFailureState());
+    });
+  }
+
+  removePostImage() {
+    postImage = null;
+    emit(AppRemovePostImageState());
   }
 }

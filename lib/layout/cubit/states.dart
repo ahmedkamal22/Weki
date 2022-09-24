@@ -41,3 +41,15 @@ class AppUpdateDataErrorState extends AppStates {}
 class AppUpdateImageLoadingState extends AppStates {}
 
 class AppUpdateCoverLoadingState extends AppStates {}
+
+class AppGetPostImagePickedSuccessState extends AppStates {}
+
+class AppGetPostImagePickedFailureState extends AppStates {}
+
+class AppCreatePostLoadingState extends AppStates {}
+
+class AppCreatePostSuccessState extends AppStates {}
+
+class AppCreatePostFailureState extends AppStates {}
+
+class AppRemovePostImageState extends AppStates {}
