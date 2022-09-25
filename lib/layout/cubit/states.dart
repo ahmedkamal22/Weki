@@ -12,6 +12,16 @@ class AppGetDataFailureState extends AppStates {
   AppGetDataFailureState(this.error);
 }
 
+class AppGetPostsLoadingState extends AppStates {}
+
+class AppGetPostsSuccessState extends AppStates {}
+
+class AppGetPostsFailureState extends AppStates {
+  String error;
+
+  AppGetPostsFailureState(this.error);
+}
+
 class AppChangeModeState extends AppStates {}
 
 class AppChangeBottomNavState extends AppStates {}
