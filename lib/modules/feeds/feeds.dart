@@ -17,7 +17,7 @@ class FeedsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return ConditionalBuilder(
-          condition: cubit.posts.isNotEmpty,
+          condition: cubit.posts.isNotEmpty && cubit.userModel != null,
           builder: (context) {
             return SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -55,7 +55,7 @@ class FeedsScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) =>
-                          buildPostsItem(context, cubit.posts[index]),
+                          buildPostsItem(context, cubit.posts[index], index),
                       separatorBuilder: (context, index) => SizedBox(
                             height: 10,
                           ),
@@ -70,7 +70,7 @@ class FeedsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildPostsItem(context, PostsModel model) => Card(
+  Widget buildPostsItem(context, PostsModel model, index) => Card(
         elevation: 5.0,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -216,7 +216,7 @@ class FeedsScreen extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text("0")
+                          Text("${AppCubit.get(context).postLikes[index]}")
                         ],
                       ),
                     ),
@@ -256,32 +256,35 @@ class FeedsScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {},
-                child: Row(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(
-                              "${AppCubit.get(context).userModel!.image}"),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Write a comment....",
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    InkWell(
-                      onTap: () {},
+              child: Row(
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(
+                            "${AppCubit.get(context).userModel!.image}"),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        "Write a comment....",
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      AppCubit.get(context)
+                          .likePost(AppCubit.get(context).likesId[index]);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
                           Icon(
@@ -296,8 +299,8 @@ class FeedsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

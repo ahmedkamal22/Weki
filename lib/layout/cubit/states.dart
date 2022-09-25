@@ -63,3 +63,7 @@ class AppCreatePostSuccessState extends AppStates {}
 class AppCreatePostFailureState extends AppStates {}
 
 class AppRemovePostImageState extends AppStates {}
+
+class AppLikePostSuccessState extends AppStates {}
+
+class AppLikePostFailureState extends AppStates {}
