@@ -33,6 +33,7 @@ class PostsScreen extends StatelessWidget {
                           postData: DateTime.now().toString(),
                           postText: postTextController.text);
                     }
+                    postTextController.clear();
                   }
                 },
                 text: "post",

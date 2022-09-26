@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:weki/layout/cubit/states.dart';
+import 'package:weki/models/comment/comment.dart';
 import 'package:weki/models/post/post.dart';
 import 'package:weki/models/user/user_model.dart';
 import 'package:weki/modules/chats/chats.dart';
@@ -278,19 +279,25 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   List<PostsModel> posts = [];
-  List<String> likesId = [];
+  List<String> postId = [];
   List<int> postLikes = [];
+  List<int> commentNum = [];
 
   getPosts() {
     emit(AppGetPostsLoadingState());
     FirebaseFirestore.instance.collection("posts").get().then((value) {
-      value.docs.forEach((element) {
-        element.reference.collection("likes").get().then((value) {
+      for (var like in value.docs) {
+        like.reference.collection("likes").get().then((value) {
           postLikes.add(value.docs.length);
-          likesId.add(element.id);
-          posts.add(PostsModel.fromJson(element.data()));
-        }).catchError((error) {});
-      });
+          postId.add(like.id);
+          posts.add(PostsModel.fromJson(like.data()));
+        });
+      }
+      for (var comment in value.docs) {
+        comment.reference.collection("comments").get().then((value) {
+          commentNum.add(value.docs.length);
+        });
+      }
       emit(AppGetPostsSuccessState());
     }).catchError((error) {
       emit(AppGetPostsFailureState(error.toString()));
@@ -302,11 +309,50 @@ class AppCubit extends Cubit<AppStates> {
         .collection("posts")
         .doc(postId)
         .collection("likes")
-        .doc(userModel!.uId)
-        .set({"liked": true}).then((value) {
+        // .doc(userModel!.uId)
+        .add({"liked": true}).then((value) {
       emit(AppLikePostSuccessState());
     }).catchError((error) {
       emit(AppLikePostFailureState());
+    });
+  }
+
+  commentPost(
+      {required String commentId,
+      required String commentText,
+      required String commentDate}) {
+    CommentModel model = CommentModel(
+        uId: userModel!.uId,
+        image: userModel!.image,
+        name: userModel!.name,
+        commentText: commentText,
+        commentDate: commentDate);
+    FirebaseFirestore.instance
+        .collection("posts")
+        .doc(commentId)
+        .collection("comments")
+        .add(model.toMap()!)
+        .then((value) {
+      emit(AppCommentPostSuccessState());
+    }).catchError((error) {
+      emit(AppCommentPostFailureState());
+    });
+  }
+
+  List<CommentModel> comments = [];
+
+  getCommentPosts({required String postId}) {
+    FirebaseFirestore.instance
+        .collection("posts")
+        .doc(postId)
+        .collection("comments")
+        .snapshots()
+        .listen((event) {
+      comments = [];
+      event.docs.forEach((element) {
+        comments.add(CommentModel.fromJson(element.data()));
+      });
+      emit(AppGetCommentPostsSuccessState());
     });
   }
 }

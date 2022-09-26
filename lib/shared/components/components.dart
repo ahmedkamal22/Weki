@@ -48,7 +48,7 @@ Widget defaultButton({
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType keyboardType,
-  required String label,
+  String? label,
   required IconData prefix,
   required String? Function(String?)? validate,
   required Color? generalWidgetsColor,
@@ -59,10 +59,12 @@ Widget defaultFormField({
   IconData? suffix,
   double radius = 0.0,
   bool isUpper = false,
+  String? hint,
   VoidCallback? suffixPressed,
   bool isPassword = false,
 }) =>
     TextFormField(
+      autocorrect: true,
       controller: controller,
       keyboardType: keyboardType,
       onFieldSubmitted: onSubmitted,
@@ -73,6 +75,7 @@ Widget defaultFormField({
       style: style,
       //this for changing input color
       decoration: InputDecoration(
+        hintText: isUpper ? hint!.toUpperCase() : hint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius),
           borderSide: BorderSide(
@@ -88,7 +91,7 @@ Widget defaultFormField({
         //this for changing border color
         fillColor: generalWidgetsColor,
         //this for changing border color
-        labelText: isUpper ? label.toUpperCase() : label,
+        labelText: isUpper ? label!.toUpperCase() : label,
         labelStyle: style,
         //this for changing label color
         prefixIcon: Icon(
@@ -100,9 +103,9 @@ Widget defaultFormField({
                 onPressed: suffixPressed,
                 icon: Icon(
                   suffix,
-                  color: generalWidgetsColor,
-                ),
-              )
+            color: generalWidgetsColor,
+          ),
+        )
             : null,
       ),
     );

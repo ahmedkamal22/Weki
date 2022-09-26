@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weki/layout/cubit/cubit.dart';
 import 'package:weki/layout/cubit/states.dart';
 import 'package:weki/models/post/post.dart';
+import 'package:weki/modules/comment/comment.dart';
+import 'package:weki/shared/components/components.dart';
 import 'package:weki/shared/styles/colors.dart';
 import 'package:weki/shared/styles/icon_broken.dart';
 
 class FeedsScreen extends StatelessWidget {
-  const FeedsScreen({Key? key}) : super(key: key);
+  FeedsScreen({Key? key}) : super(key: key);
+  var commentTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return ConditionalBuilder(
-          condition: cubit.posts.isNotEmpty && cubit.userModel != null,
+          condition: state is! AppGetPostsLoadingState,
           builder: (context) {
             return SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -238,7 +241,8 @@ class FeedsScreen extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text("0 comments")
+                          Text(
+                              "${AppCubit.get(context).commentNum[index]} comments")
                         ],
                       ),
                     ),
@@ -255,49 +259,57 @@ class FeedsScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(15.0),
               child: Row(
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(
-                            "${AppCubit.get(context).userModel!.image}"),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "Write a comment....",
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 14),
-                      ),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      navigateTo(
+                          context: context,
+                          widget: CommentScreen(
+                              AppCubit.get(context).postId[index]));
+                    },
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(
+                              "${AppCubit.get(context).userModel!.image}"),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "Write a comment....",
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   InkWell(
                     onTap: () {
                       AppCubit.get(context)
-                          .likePost(AppCubit.get(context).likesId[index]);
+                          .likePost(AppCubit.get(context).postId[index]);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            IconBroken.Heart,
-                            size: 18,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("Like"),
-                        ],
-                      ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          IconBroken.Heart,
+                          size: 18,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Like"),
+                        ),
+                      ],
                     ),
                   ),
                 ],

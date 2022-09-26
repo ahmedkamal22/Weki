@@ -22,6 +22,14 @@ class AppGetPostsFailureState extends AppStates {
   AppGetPostsFailureState(this.error);
 }
 
+class AppGetCommentPostsSuccessState extends AppStates {}
+
+class AppGetCommentPostsFailureState extends AppStates {
+  String error;
+
+  AppGetCommentPostsFailureState(this.error);
+}
+
 class AppChangeModeState extends AppStates {}
 
 class AppChangeBottomNavState extends AppStates {}
@@ -67,3 +75,7 @@ class AppRemovePostImageState extends AppStates {}
 class AppLikePostSuccessState extends AppStates {}
 
 class AppLikePostFailureState extends AppStates {}
+
+class AppCommentPostSuccessState extends AppStates {}
+
+class AppCommentPostFailureState extends AppStates {}
