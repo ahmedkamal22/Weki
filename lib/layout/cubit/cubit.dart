@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:weki/layout/cubit/states.dart';
 import 'package:weki/models/comment/comment.dart';
+import 'package:weki/models/message/message_model.dart';
 import 'package:weki/models/post/post.dart';
 import 'package:weki/models/user/user_model.dart';
 import 'package:weki/modules/chats/chats.dart';
@@ -53,6 +54,7 @@ class AppCubit extends Cubit<AppStates> {
   int currentIndex = 0;
 
   changeBottomNav(int index) {
+    if (index == 1) getAllUsers();
     if (index == 2) {
       emit(AppNewPostState());
     } else {
@@ -365,13 +367,54 @@ class AppCubit extends Cubit<AppStates> {
   List<UserModel> users = [];
 
   getAllUsers() {
-    FirebaseFirestore.instance.collection("users").get().then((value) {
-      value.docs.forEach((element) {
-        users.add(UserModel.fromJson(element.data()));
+    if (users.isEmpty)
+      FirebaseFirestore.instance.collection("users").get().then((value) {
+        value.docs.forEach((element) {
+          if (element.data()["uId"] != userModel!.uId)
+            users.add(UserModel.fromJson(element.data()));
+        });
+        emit(AppGetUsersSuccessState());
+      }).catchError((error) {
+        emit(AppGetUsersFailureState());
       });
-      emit(AppGetUsersSuccessState());
+  }
+
+  sendMessage({
+    required String? receiverId,
+    required String? messageText,
+    required String? messageDate,
+  }) {
+    MessageModel model = MessageModel(
+        receiverId: receiverId,
+        messageText: messageText,
+        messageDate: messageDate,
+        senderId: userModel!.uId);
+    //my message
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userModel!.uId)
+        .collection("chats")
+        .doc(receiverId)
+        .collection("messages")
+        .add(model.toMap())
+        .then((value) {
+      emit(AppSendMessageSuccessState());
     }).catchError((error) {
-      emit(AppGetUsersFailureState());
+      emit(AppSendMessageFailureState());
+    });
+
+    //receiver message
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(receiverId)
+        .collection("chats")
+        .doc(userModel!.uId)
+        .collection("messages")
+        .add(model.toMap())
+        .then((value) {
+      emit(AppSendMessageSuccessState());
+    }).catchError((error) {
+      emit(AppSendMessageFailureState());
     });
   }
 }
