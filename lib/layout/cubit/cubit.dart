@@ -354,6 +354,7 @@ class AppCubit extends Cubit<AppStates> {
         .collection("posts")
         .doc(postId)
         .collection("comments")
+        .orderBy("commentDate")
         .snapshots()
         .listen((event) {
       comments = [];
@@ -415,6 +416,28 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppSendMessageSuccessState());
     }).catchError((error) {
       emit(AppSendMessageFailureState());
+    });
+  }
+
+  List<MessageModel> messages = [];
+
+  getMessages({
+    required String? receiverId,
+  }) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userModel!.uId)
+        .collection("chats")
+        .doc(receiverId)
+        .collection("messages")
+        .orderBy("messageDate")
+        .snapshots()
+        .listen((event) {
+      messages = [];
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+      });
+      emit(AppGetMessagesSuccessState());
     });
   }
 }

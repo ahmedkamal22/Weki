@@ -87,3 +87,5 @@ class AppGetUsersFailureState extends AppStates {}
 class AppSendMessageSuccessState extends AppStates {}
 
 class AppSendMessageFailureState extends AppStates {}
+
+class AppGetMessagesSuccessState extends AppStates {}
