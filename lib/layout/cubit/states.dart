@@ -79,3 +79,7 @@ class AppLikePostFailureState extends AppStates {}
 class AppCommentPostSuccessState extends AppStates {}
 
 class AppCommentPostFailureState extends AppStates {}
+
+class AppGetUsersSuccessState extends AppStates {}
+
+class AppGetUsersFailureState extends AppStates {}

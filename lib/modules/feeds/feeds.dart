@@ -20,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return ConditionalBuilder(
-          condition: state is! AppGetPostsLoadingState,
+          condition: cubit.posts.isNotEmpty,
           builder: (context) {
             return SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -205,46 +205,41 @@ class FeedsScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            IconBroken.Heart,
-                            color: Colors.red,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("${AppCubit.get(context).postLikes[index]}")
-                        ],
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          IconBroken.Heart,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                            "${AppCubit.get(context).postLikes[AppCubit.get(context).postId[index]]}")
+                      ],
                     ),
                   ),
                 ),
                 Expanded(
-                  child: InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            IconBroken.Chat,
-                            color: Colors.amber,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                              "${AppCubit.get(context).commentNum[index]} comments")
-                        ],
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          IconBroken.Chat,
+                          color: Colors.amber,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                            "${AppCubit.get(context).commentNum[AppCubit.get(context).postId[index]]} comments")
+                      ],
                     ),
                   ),
                 ),
@@ -273,8 +268,7 @@ class FeedsScreen extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 20,
-                          backgroundImage: NetworkImage(
-                              "${AppCubit.get(context).userModel!.image}"),
+                          backgroundImage: NetworkImage("${model.image}"),
                         ),
                         SizedBox(
                           width: 15,
