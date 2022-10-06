@@ -289,26 +289,27 @@ class AppCubit extends Cubit<AppStates> {
 
   getPosts() {
     emit(AppGetPostsLoadingState());
-    FirebaseFirestore.instance.collection("posts").get().then((value) {
+    FirebaseFirestore.instance
+        .collection("posts")
+        .orderBy("postDate")
+        .snapshots()
+        .listen((value) {
+      posts = [];
       for (var comment in value.docs) {
-        comment.reference.collection("comments").get().then((value) {
+        comment.reference.collection("comments").snapshots().listen((value) {
+          comments = [];
           commentNum.addAll({comment.id: value.docs.length});
-        }).then((value) {
           emit(AppGetPostsSuccessState());
         });
       }
-
       for (var like in value.docs) {
-        like.reference.collection("likes").get().then((value) {
+        like.reference.collection("likes").snapshots().listen((value) {
           postLikes.addAll({like.id: value.docs.length});
           postId.add(like.id);
           posts.add(PostsModel.fromJson(like.data()));
-        }).then((value) {
           emit(AppGetPostsSuccessState());
         });
       }
-    }).catchError((error) {
-      emit(AppGetPostsFailureState(error.toString()));
     });
   }
 

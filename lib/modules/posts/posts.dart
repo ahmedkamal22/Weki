@@ -28,6 +28,7 @@ class PostsScreen extends StatelessWidget {
                       cubit.createPost(
                           postData: DateTime.now().toString(),
                           postText: postTextController.text);
+                      postTextController.clear();
                     } else {
                       cubit.uploadPost(
                           postData: DateTime.now().toString(),
@@ -97,15 +98,17 @@ class PostsScreen extends StatelessWidget {
                               cubit.createPost(
                                   postData: DateTime.now().toString(),
                                   postText: postTextController.text);
+                              postTextController.clear();
                             } else {
                               cubit.uploadPost(
                                   postData: DateTime.now().toString(),
                                   postText: postTextController.text);
+                              postTextController.clear();
                             }
                           }
                         },
                         decoration: InputDecoration(
-                          hintText: "What's on your mind?",
+                          hintText: "What's on your mind\t?",
                           border: InputBorder.none,
                         ),
                       ),

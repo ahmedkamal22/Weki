@@ -43,11 +43,14 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   fluttertoast: ^8.0.9
   image_picker: ^0.7.4
+  intl: ^0.17.0
+  #Firbase
   firebase_core: ^1.0.3
   firebase_auth: ^1.0.3
   cloud_firestore: ^1.0.4
   firebase_storage: ^8.0.3
-  intl: ^0.17.0
+  firebase_messaging: ^13.0.3
+
 
 dev_dependencies:
   flutter_test:
