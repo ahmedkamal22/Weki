@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weki/layout/cubit/cubit.dart';
@@ -67,14 +68,21 @@ class FeedsScreen extends StatelessWidget {
               ),
             );
           },
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => testScreen(
+              text: "There isn't any posts yet...",
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: AppCubit.get(context).isDark
+                        ? Colors.white
+                        : Colors.black,
+                  )),
         );
       },
     );
   }
 
   Widget buildPostsItem(context, PostsModel model, index) => Card(
-        elevation: 5.0,
+    elevation: 5.0,
+        color: Theme.of(context).scaffoldBackgroundColor,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Column(
@@ -84,9 +92,14 @@ class FeedsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage("${model.image}"),
+                  InkWell(
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage("${model.image}"),
+                    ),
+                    onTap: () {
+                      AppCubit.get(context).changeBottomNav(4);
+                    },
                   ),
                   SizedBox(
                     width: 15,
@@ -97,7 +110,12 @@ class FeedsScreen extends StatelessWidget {
                         children: [
                           Text(
                             "${model.name}",
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: AppCubit.get(context).isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                           ),
                           SizedBox(
                             width: 5,
@@ -111,17 +129,25 @@ class FeedsScreen extends StatelessWidget {
                       ),
                       Text(
                         "${model.postDate}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(height: 2.2),
+                        style: Theme.of(context).textTheme.caption!.copyWith(
+                              height: 2.2,
+                              color: AppCubit.get(context).isDark
+                                  ? Colors.grey[300]
+                                  : Colors.black,
+                            ),
                       ),
                     ],
                   ),
                   Spacer(),
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.more_horiz),
+                    onPressed: () {
+                      AppCubit.get(context).deletePost(
+                          postId: AppCubit.get(context).postId[index]);
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.grey[300],
+                    ),
                   ),
                 ],
               ),
@@ -138,10 +164,13 @@ class FeedsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 "${model.postText}",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 17, height: 1.1),
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 17,
+                      height: 1.1,
+                      color: AppCubit.get(context).isDark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
               ),
             ),
             // Container(
@@ -218,7 +247,16 @@ class FeedsScreen extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                            "${AppCubit.get(context).postLikes[AppCubit.get(context).postId[index]]}")
+                          "${AppCubit.get(context).postLikes[AppCubit.get(context).postId[index]]}",
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontSize: 17,
+                                    height: 1.1,
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.grey[300]
+                                        : Colors.black,
+                                  ),
+                        )
                       ],
                     ),
                   ),
@@ -238,7 +276,16 @@ class FeedsScreen extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                            "${AppCubit.get(context).commentNum[AppCubit.get(context).postId[index]]} comments")
+                          "${AppCubit.get(context).commentNum[AppCubit.get(context).postId[index]]} comments",
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontSize: 17,
+                                    height: 1.1,
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.grey[300]
+                                        : Colors.black,
+                                  ),
+                        )
                       ],
                     ),
                   ),
@@ -275,10 +322,12 @@ class FeedsScreen extends StatelessWidget {
                         ),
                         Text(
                           "Write a comment....",
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(fontSize: 14),
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                                fontSize: 14,
+                                color: AppCubit.get(context).isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                         ),
                       ],
                     ),
@@ -301,7 +350,16 @@ class FeedsScreen extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("Like"),
+                          child: Text(
+                            "Like",
+                            style:
+                                Theme.of(context).textTheme.caption!.copyWith(
+                                      fontSize: 14,
+                                      color: AppCubit.get(context).isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                          ),
                         ),
                       ],
                     ),

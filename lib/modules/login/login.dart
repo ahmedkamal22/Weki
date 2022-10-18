@@ -28,6 +28,8 @@ class LoginScreen extends StatelessWidget {
             CacheHelper.saveData(key: "uId", value: state.uId).then((value) {
               uId = state.uId;
               navigateAndFinish(context: context, widget: HomeScreen());
+              AppCubit.get(context).getUserData();
+              AppCubit.get(context).getPosts();
             });
           }
           if (state is LoginFailureState) {

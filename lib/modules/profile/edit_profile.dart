@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weki/layout/cubit/cubit.dart';
 import 'package:weki/layout/cubit/states.dart';
 import 'package:weki/shared/components/components.dart';
+import 'package:weki/shared/components/constants.dart';
 import 'package:weki/shared/styles/icon_broken.dart';
 
 class EditProfile extends StatelessWidget {
@@ -35,6 +36,11 @@ class EditProfile extends StatelessWidget {
                     bio: bioController.text,
                     phone: phoneController.text,
                     email: emailController.text,
+                  );
+                  AppCubit.get(context).sendFCMNotification(
+                    token: deviceToken,
+                    senderName: AppCubit.get(context).userModel!.name,
+                    messageText: 'Your profile updated successfully',
                   );
                 },
                 text: "update data",
@@ -224,9 +230,13 @@ class EditProfile extends StatelessWidget {
                         }
                         return null;
                       },
-                      generalWidgetsColor: Colors.black,
+                      generalWidgetsColor: AppCubit.get(context).isDark
+                          ? Colors.white
+                          : Colors.black,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppCubit.get(context).isDark
+                            ? Colors.white
+                            : Colors.black,
                       ),
                       radius: 20.0),
                   SizedBox(
@@ -243,9 +253,13 @@ class EditProfile extends StatelessWidget {
                         }
                         return null;
                       },
-                      generalWidgetsColor: Colors.black,
+                      generalWidgetsColor: AppCubit.get(context).isDark
+                          ? Colors.white
+                          : Colors.black,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppCubit.get(context).isDark
+                            ? Colors.white
+                            : Colors.black,
                       ),
                       radius: 20.0),
                   SizedBox(
@@ -262,9 +276,13 @@ class EditProfile extends StatelessWidget {
                         }
                         return null;
                       },
-                      generalWidgetsColor: Colors.black,
+                      generalWidgetsColor: AppCubit.get(context).isDark
+                          ? Colors.white
+                          : Colors.black,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppCubit.get(context).isDark
+                            ? Colors.white
+                            : Colors.black,
                       ),
                       radius: 20.0),
                   SizedBox(
@@ -281,9 +299,13 @@ class EditProfile extends StatelessWidget {
                         }
                         return null;
                       },
-                      generalWidgetsColor: Colors.black,
+                      generalWidgetsColor: AppCubit.get(context).isDark
+                          ? Colors.white
+                          : Colors.black,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppCubit.get(context).isDark
+                            ? Colors.white
+                            : Colors.black,
                       ),
                       radius: 20.0),
                 ],

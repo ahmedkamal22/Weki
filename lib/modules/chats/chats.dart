@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weki/layout/cubit/cubit.dart';
 import 'package:weki/layout/cubit/states.dart';
-import 'package:weki/models/user/user_model.dart';
-import 'package:weki/modules/chats/chat_details.dart';
 import 'package:weki/shared/components/components.dart';
 
 class ChatsScreen extends StatelessWidget {
@@ -29,27 +27,4 @@ class ChatsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildChatItem(context, UserModel user) => InkWell(
-        onTap: () {
-          navigateTo(context: context, widget: ChatDetailsScreen(user));
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: NetworkImage("${user.image}"),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Text(
-                "${user.name}",
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ],
-          ),
-        ),
-      );
 }

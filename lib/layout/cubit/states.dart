@@ -36,6 +36,8 @@ class AppChangeBottomNavState extends AppStates {}
 
 class AppNewPostState extends AppStates {}
 
+class AppNotificationsState extends AppStates {}
+
 class AppGetProfileImagePickedSuccessState extends AppStates {}
 
 class AppGetProfileImagePickedFailureState extends AppStates {}
@@ -64,6 +66,18 @@ class AppGetPostImagePickedSuccessState extends AppStates {}
 
 class AppGetPostImagePickedFailureState extends AppStates {}
 
+class AppGetCommentImagePickedSuccessState extends AppStates {}
+
+class AppGetCommentImagePickedFailureState extends AppStates {}
+
+class AppGetMessageImagePickedSuccessState extends AppStates {}
+
+class AppGetMessageImagePickedFailureState extends AppStates {}
+
+class AppGetChatImagePickedSuccessState extends AppStates {}
+
+class AppGetChatImagePickedFailureState extends AppStates {}
+
 class AppCreatePostLoadingState extends AppStates {}
 
 class AppCreatePostSuccessState extends AppStates {}
@@ -72,11 +86,25 @@ class AppCreatePostFailureState extends AppStates {}
 
 class AppRemovePostImageState extends AppStates {}
 
+class AppRemoveCommentImageState extends AppStates {}
+
+class AppRemoveMessageImageState extends AppStates {}
+
 class AppLikePostSuccessState extends AppStates {}
 
 class AppLikePostFailureState extends AppStates {}
 
 class AppCommentPostSuccessState extends AppStates {}
+
+class AppPostDeleteSuccessState extends AppStates {}
+
+class AppPostDeleteFailureState extends AppStates {}
+
+class AppCommentDeleteSuccessState extends AppStates {}
+
+class AppCommentDeleteFailureState extends AppStates {}
+
+class AppCommentPostLoadingState extends AppStates {}
 
 class AppCommentPostFailureState extends AppStates {}
 
@@ -84,8 +112,20 @@ class AppGetUsersSuccessState extends AppStates {}
 
 class AppGetUsersFailureState extends AppStates {}
 
+class AppSendMessageLoadingState extends AppStates {}
+
 class AppSendMessageSuccessState extends AppStates {}
 
 class AppSendMessageFailureState extends AppStates {}
+
+class AppSearchLoadingState extends AppStates {}
+
+class AppSearchSuccessState extends AppStates {}
+
+class AppSearchFailureState extends AppStates {}
+
+class AppDeleteMessageSuccessState extends AppStates {}
+
+class AppDeleteMessageFailureState extends AppStates {}
 
 class AppGetMessagesSuccessState extends AppStates {}

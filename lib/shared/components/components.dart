@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:weki/layout/cubit/cubit.dart';
+import 'package:weki/models/user/user_model.dart';
+import 'package:weki/modules/chats/chat_details.dart';
 import 'package:weki/modules/login/login.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';
 import 'package:weki/shared/styles/icon_broken.dart';
@@ -76,6 +79,7 @@ Widget defaultFormField({
       //this for changing input color
       decoration: InputDecoration(
         hintText: isUpper ? hint!.toUpperCase() : hint,
+        hintStyle: style,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius),
           borderSide: BorderSide(
@@ -158,7 +162,7 @@ changeColor(ToastStates state) {
 signOut({
   required context,
 }) {
-  CacheHelper.signOut(key: "token").then((value) {
+  CacheHelper.signOut(key: "uId").then((value) {
     navigateAndFinish(context: context, widget: LoginScreen());
   });
 }
@@ -178,7 +182,37 @@ PreferredSizeWidget? defaultAppBar({
       titleSpacing: 5.0,
       title: Text(
         title!,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: AppCubit.get(context).isDark ? Colors.white : Colors.black,
+            ),
       ),
       actions: actions,
+    );
+
+Widget buildChatItem(context, UserModel user) => InkWell(
+      onTap: () {
+        navigateTo(context: context, widget: ChatDetailsScreen(user));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 25,
+              backgroundImage: NetworkImage("${user.image}"),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              "${user.name}",
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: AppCubit.get(context).isDark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+            ),
+          ],
+        ),
+      ),
     );

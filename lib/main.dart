@@ -10,32 +10,34 @@ import 'package:weki/modules/login/login.dart';
 import 'package:weki/shared/components/components.dart';
 import 'package:weki/shared/components/constants.dart';
 import 'package:weki/shared/network/local/cache_helper.dart';
+import 'package:weki/shared/network/remote/dio_helper.dart';
 import 'package:weki/shared/styles/themes.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print(message.data);
-  showToast(msg: "onBackground", state: ToastStates.Success);
+  showToast(msg: "you have a new notification", state: ToastStates.Success);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  // DioHelper.getInit();
+  DioHelper.getInit();
   await CacheHelper.init();
   await Firebase.initializeApp();
   var token = await FirebaseMessaging.instance.getToken();
   print("Your token is:\t\n${token}");
   FirebaseMessaging.onMessage.listen((event) {
     print(event.data);
-    showToast(msg: "onMessage", state: ToastStates.Success);
+    showToast(msg: "you have a new notification", state: ToastStates.Success);
   });
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
     print(event.data);
-    showToast(msg: "onMessageOpenedApp", state: ToastStates.Success);
+    showToast(msg: "you have a new notification", state: ToastStates.Success);
   });
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   var boarding = CacheHelper.getData(key: "boarding");
   uId = CacheHelper.getData(key: "uId");
+  print(uId);
   var isDark = CacheHelper.getData(key: "isDark");
   Widget widget;
   if (boarding != null) {

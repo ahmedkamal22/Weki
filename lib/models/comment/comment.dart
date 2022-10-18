@@ -10,8 +10,9 @@ class CommentModel {
   @required
   String? commentText;
 
-  // @required
-  // String? commentImage;
+  @required
+  String? commentImage;
+
   @required
   String? uId;
 
@@ -20,13 +21,13 @@ class CommentModel {
       this.image,
       this.commentDate,
       this.commentText,
-      // this.commentImage,
+      this.commentImage,
       this.uId});
 
   CommentModel.fromJson(Map<String, dynamic> json) {
     name = json["name"];
     image = json["image"];
-    // commentImage = json["commentImage"];
+    commentImage = json["commentImage"];
     commentDate = json["commentDate"];
     commentText = json["commentText"];
     uId = json["uId"];
@@ -38,7 +39,7 @@ class CommentModel {
       "image": image,
       "commentDate": commentDate,
       "commentText": commentText,
-      // "commentImage": commentImage,
+      "commentImage": commentImage,
       "uId": uId,
     };
   }

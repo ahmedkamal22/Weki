@@ -21,18 +21,26 @@ class _BoardingScreenState extends State<BoardingScreen> {
   List<BoardingModel> boarding = [
     BoardingModel(
       image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuiFv-jcFkoGuddnGuXAr_-8YVOrUliXyWsG65b_VNWQ&s",
-      title: "Title 1",
+          "https://img.freepik.com/free-photo/tea-pouring-beautiful-arab-women-meeting-cafe-restaurant-friends-business-meeting-spending-time-together-talking-laughting-muslim-lifestyle-stylish-happy-models-with-make-up_155003-45415.jpg?w=740&t=st=1666072618~exp=1666073218~hmac=43e1858e9a0ca3664b44b15180d78bf5056f94b7cc1c85a56a01f92e263ffb95",
+      title: "Weki is A social media application. ",
     ),
     BoardingModel(
       image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuiFv-jcFkoGuddnGuXAr_-8YVOrUliXyWsG65b_VNWQ&s",
-      title: "Title 2",
+          "https://img.freepik.com/free-photo/sign-up-form-button-graphic-concept_53876-133556.jpg?w=740&t=st=1666072865~exp=1666073465~hmac=c9807b52bdbc0e81acdc837dab60c282899d7471cb8976e149a860d784196e26",
+      title:
+          "Here you can Create an account or log in to Weki to get contact with your friends. ",
     ),
     BoardingModel(
       image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuiFv-jcFkoGuddnGuXAr_-8YVOrUliXyWsG65b_VNWQ&s",
-      title: "Title 3",
+          "https://img.freepik.com/premium-photo/two-asian-children-little-girls-wear-christmas-santa-claus-chating-with-friend-digital-tablet-christmas-holiday-concept-stock-photo_258782-131.jpg?w=740",
+      title:
+          "A simple, fun & creative way to connect with others & messages with friends & family, Knowing world news.",
+    ),
+    BoardingModel(
+      image:
+          "https://img.freepik.com/free-photo/portrait-young-attractive-african-american-smiling-boy-sits-table-cafe-works-laptop-drinks-aromatic-coffee-looks-window_295783-2412.jpg?w=740&t=st=1666073479~exp=1666074079~hmac=8a3b4b3e97f5b11330e84ab4d24db419516aecf95c6a941413baa9904d658878",
+      title:
+          "Creating a powerful personal profile, \t you can delete comments & messages by swiping either left or right. ",
     ),
   ];
   bool isLast = false;
