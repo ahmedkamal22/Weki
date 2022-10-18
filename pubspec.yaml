@@ -34,10 +34,37 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  shared_preferences: ^2.0.15
+  dio: ^4.0.6
+  conditional_builder_null_safety: ^0.0.6
+  hexcolor: ^2.0.7
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
+  smooth_page_indicator: ^1.0.0+2
+  fluttertoast: ^8.0.9
+  image_picker: ^0.7.4
+  intl: ^0.17.0
+  #Firbase
+  firebase_core: ^1.0.3
+  firebase_auth: ^1.0.3
+  cloud_firestore: ^1.0.4
+  firebase_storage: ^8.0.3
+  firebase_messaging: ^13.0.3
+  url_launcher: ^6.1.6
+  focused_menu: ^1.0.0
+  connectivity_plus: ^2.3.7
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.9.3
+
+flutter_icons:
+  image_path: "assets/images/weki.png"
+  android: true
+  ios: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -57,6 +84,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+
+  fonts:
+    - family: IconBroken
+      fonts:
+        - asset: assets/fonts/icons.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -73,11 +105,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  #   fonts:
+  #     - family: Iconly-Broken
+  #       fonts:
+  #         - asset: fonts/icons.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
