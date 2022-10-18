@@ -59,17 +59,24 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 child: Text(
                   "${model.name}",
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: AppCubit.get(context).isDark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.only(top: 10, bottom: 30),
                 child: Text(
                   "${model.bio}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption!
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: AppCubit.get(context).isDark
+                            ? Colors.grey[300]
+                            : Colors.black.withOpacity(.8),
+                      ),
                 ),
               ),
               Row(
@@ -78,41 +85,26 @@ class SettingsScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "100",
-                          style: Theme.of(context).textTheme.bodyText1,
+                          "0",
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.grey[300]
+                                        : Colors.black,
+                                  ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text("Posts"),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "1500",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("Fiends"),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          "2000",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("Likes"),
+                        Text("Posts",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16)),
                       ],
                     ),
                   ),
@@ -121,12 +113,79 @@ class SettingsScreen extends StatelessWidget {
                       children: [
                         Text(
                           "0",
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.grey[300]
+                                        : Colors.black,
+                                  ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text("Followers"),
+                        Text("Fiends",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16)),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "0",
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.grey[300]
+                                        : Colors.black,
+                                  ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text("Likes",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16)),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "0",
+                          style:
+                              Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.grey[300]
+                                        : Colors.black,
+                                  ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text("Followers",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                    color: AppCubit.get(context).isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16)),
                       ],
                     ),
                   ),
@@ -139,7 +198,10 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                        onPressed: () {}, child: Text("Add Photos")),
+                        onPressed: () {
+                          navigateTo(context: context, widget: EditProfile());
+                        },
+                        child: Text("Edit Profile")),
                   ),
                   SizedBox(
                     width: 10,

@@ -7,6 +7,7 @@ import 'package:weki/layout/cubit/cubit.dart';
 import 'package:weki/layout/cubit/states.dart';
 import 'package:weki/models/comment/comment.dart';
 import 'package:weki/shared/components/components.dart';
+import 'package:weki/shared/components/constants.dart';
 import 'package:weki/shared/styles/icon_broken.dart';
 
 class CommentScreen extends StatelessWidget {
@@ -33,6 +34,18 @@ class CommentScreen extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
+                    if (state is AppCommentPostLoadingState)
+                      Column(
+                        children: [
+                          LinearProgressIndicator(
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     Expanded(
                       child: ConditionalBuilder(
                         condition: cubit.comments.isNotEmpty,
@@ -40,14 +53,19 @@ class CommentScreen extends StatelessWidget {
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (context, index) => buildCommentItem(
-                                context, cubit.comments[index]),
+                                context, cubit.comments[index], index),
                             separatorBuilder: (context, index) => SizedBox(
                                   height: 15,
                                 ),
                             itemCount: cubit.comments.length),
                         fallback: (context) => testScreen(
                             text: "There isn't any comment yet...",
-                            style: Theme.of(context).textTheme.bodyText1),
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: AppCubit.get(context).isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    )),
                       ),
                     ),
                     writeComment(context),
@@ -61,23 +79,31 @@ class CommentScreen extends StatelessWidget {
     });
   }
 
-  Widget buildCommentItem(context, CommentModel model) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage("${model.image}"),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(15)),
-              child: Expanded(
+  Widget buildCommentItem(context, CommentModel model, index) => Dismissible(
+        key: UniqueKey(),
+        onDismissed: (d) {
+          AppCubit.get(context).deleteComment(
+            postId: AppCubit.get(context).postId[index],
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 25,
+              backgroundImage: NetworkImage("${model.image}"),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: AppCubit.get(context).isDark
+                        ? Colors.grey[200]
+                        : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(15)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -90,54 +116,143 @@ class CommentScreen extends StatelessWidget {
                     ),
                     Text(
                       "${model.commentText}",
-                      // maxLines: 9,
-                      // overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(fontSize: 18, height: 1.0),
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 18,
+                            height: 1.0,
+                          ),
                     ),
+                    if (model.commentImage != "Without comment image...")
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: DecorationImage(
+                                image: NetworkImage(model.commentImage!),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 
-  Widget writeComment(context) => Row(
+  Widget writeComment(context) => Column(
         children: [
-          Expanded(
-            child: defaultFormField(
-                controller: commentController,
-                keyboardType: TextInputType.text,
-                hint: "Write a comment...",
-                prefix: IconBroken.Document,
-                validate: (value) {
-                  if (value!.isEmpty) {
-                    return "This field can't be null";
-                  }
-                  return null;
-                },
-                generalWidgetsColor: Colors.black.withOpacity(.6),
-                style: TextStyle(color: Colors.black.withOpacity(.6)),
-                radius: 20),
+          if (AppCubit.get(context).commentImage != null)
+            Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: [
+                Container(
+                  height: 80,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    image: DecorationImage(
+                        image: FileImage(AppCubit.get(context).commentImage!),
+                        fit: BoxFit.cover),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(top: 5, end: 5),
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.grey[300],
+                    child: IconButton(
+                      iconSize: 17,
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        AppCubit.get(context).removeCommentImage();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          if (AppCubit.get(context).commentImage != null)
+            SizedBox(
+              height: 10,
+            ),
+          Row(
+            children: [
+              Expanded(
+                child: defaultFormField(
+                  controller: commentController,
+                  keyboardType: TextInputType.text,
+                  hint: "Write a comment...",
+                  prefix: IconBroken.Document,
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return "This field can't be null";
+                    }
+                    return null;
+                  },
+                  generalWidgetsColor: AppCubit.get(context).isDark
+                      ? Colors.white
+                      : Colors.black,
+                  style: TextStyle(
+                    color: AppCubit.get(context).isDark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                  radius: 20,
+                ),
+              ),
+              IconButton(
+                  highlightColor: Theme.of(context).scaffoldBackgroundColor,
+                  onPressed: () {
+                    AppCubit.get(context).getCommentImage();
+                  },
+                  icon: Icon(
+                    IconBroken.Camera,
+                    color: Colors.blue,
+                  )),
+              IconButton(
+                  highlightColor: Theme.of(context).scaffoldBackgroundColor,
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      if (AppCubit.get(context).commentImage == null) {
+                        AppCubit.get(context).commentPost(
+                            commentId: commentId!,
+                            commentText: commentController.text,
+                            commentDate: DateTime.now().toString());
+                      } else {
+                        AppCubit.get(context)
+                            .uploadCommentImage(
+                                commentId: commentId!,
+                                commentText: commentController.text,
+                                commentDate: DateTime.now().toString())!
+                            .then((value) {
+                          AppCubit.get(context).removeCommentImage();
+                        });
+                      }
+                      commentController.clear();
+                      AppCubit.get(context).sendFCMNotification(
+                        token: deviceToken,
+                        senderName: AppCubit.get(context).userModel!.name,
+                        messageText:
+                            '${AppCubit.get(context).userModel!.name}' +
+                                'commented on a post you have been shared',
+                      );
+                      Navigator.pop(context);
+                    }
+                  },
+                  icon: Icon(
+                    IconBroken.Send,
+                    color: Colors.blue,
+                  )),
+            ],
           ),
-          IconButton(
-              highlightColor: Theme.of(context).scaffoldBackgroundColor,
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  AppCubit.get(context).commentPost(
-                      commentId: commentId!,
-                      commentText: commentController.text,
-                      commentDate: DateTime.now().toString());
-                  commentController.clear();
-                }
-              },
-              icon: Icon(
-                IconBroken.Send,
-                color: Colors.blue,
-              )),
         ],
       );
 }

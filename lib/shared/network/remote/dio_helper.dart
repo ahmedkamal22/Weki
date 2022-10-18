@@ -6,7 +6,7 @@ class DioHelper {
   static getInit() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "",
+        baseUrl: "https://fcm.googleapis.com/fcm/",
         receiveDataWhenStatusError: true,
       ),
     );
@@ -31,12 +31,12 @@ class DioHelper {
     required Map<String, dynamic> data,
     Map<String, dynamic>? query,
     String lang = "en",
-    String? token,
   }) async {
     dio!.options.headers = {
       "Content-Type": "application/json",
       "lang": lang,
-      "Authorization": token
+      "Authorization":
+          "key=AAAAy1Rwvxg:APA91bED_VZE9Cb2cKtHrJuoXnulkHEdn6VydMrsvPadYkOE0Rghg9WWZZ44MQTatheajy226h-kX34tctOumdRzA6lOulS-XNTPKYcnZivC-9xYJ9mKI7Q3_5p8ve56kK4Ebc0MZIct",
     };
     return await dio!.post(key, data: data, queryParameters: query);
   }

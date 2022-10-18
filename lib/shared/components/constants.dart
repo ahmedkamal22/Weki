@@ -1,6 +1,10 @@
 import 'package:bloc/bloc.dart';
 
-late String uId;
+late var uId;
+
+String deviceToken =
+    "ftuvOOvvTHuVCF_VpiK-D7:APA91bHDJ6zWD4ZrOS7DvCemSsrhGlu6l9KqtmV2zblQ9tXokzkcQQRt2pLdNRBbDH2jFgph0ZKE2qVWczWiD3swVm-kBtHASnDVAJYabFtFVGC1BLf-I_rVv8VIDRyaMIBU79Twr_oe";
+String SEND = "send";
 
 class MyBlocObserver extends BlocObserver {
   @override

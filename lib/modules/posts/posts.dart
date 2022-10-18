@@ -28,13 +28,14 @@ class PostsScreen extends StatelessWidget {
                       cubit.createPost(
                           postData: DateTime.now().toString(),
                           postText: postTextController.text);
-                      postTextController.clear();
                     } else {
                       cubit.uploadPost(
                           postData: DateTime.now().toString(),
                           postText: postTextController.text);
+                      cubit.removePostImage();
                     }
                     postTextController.clear();
+                    Navigator.pop(context);
                   }
                 },
                 text: "post",
@@ -72,10 +73,13 @@ class PostsScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "${cubit.userModel!.name}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(fontSize: 18),
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 18,
+                                      color: AppCubit.get(context).isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                           ),
                         ),
                       ],
@@ -85,7 +89,13 @@ class PostsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
+                        style: TextStyle(
+                          color: AppCubit.get(context).isDark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         controller: postTextController,
+                        autocorrect: true,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "This field can't be null";
@@ -98,18 +108,26 @@ class PostsScreen extends StatelessWidget {
                               cubit.createPost(
                                   postData: DateTime.now().toString(),
                                   postText: postTextController.text);
-                              postTextController.clear();
                             } else {
                               cubit.uploadPost(
                                   postData: DateTime.now().toString(),
                                   postText: postTextController.text);
-                              postTextController.clear();
+                              cubit.removePostImage();
                             }
+                            postTextController.clear();
+                            Navigator.pop(context);
                           }
                         },
                         decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                           hintText: "What's on your mind\t?",
                           border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: AppCubit.get(context).isDark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                       ),
                     ),
