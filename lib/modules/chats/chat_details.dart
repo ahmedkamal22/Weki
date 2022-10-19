@@ -92,11 +92,10 @@ class ChatDetailsScreen extends StatelessWidget {
                             builder: (context) => ListView.separated(
                                 physics: BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  var message = cubit.messages;
-                                  if (message[index].senderId == null)
-                                    return messageSent(context, message[index]);
-                                  return messageReceived(
-                                      context, message[index]);
+                                  var message = cubit.messages[index];
+                                  if (cubit.userModel!.uId == message.senderId)
+                                    return messageSent(context, message);
+                                  return messageReceived(context, message);
                                 },
                                 separatorBuilder: (context, index) => SizedBox(
                                       height: 15,
@@ -245,7 +244,7 @@ class ChatDetailsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadiusDirectional.only(
                       bottomEnd: Radius.circular(10),
-                      bottomStart: Radius.circular(10),
+                      topStart: Radius.circular(10),
                       topEnd: Radius.circular(10)),
                   color: Colors.grey[600],
                 ),
@@ -285,7 +284,7 @@ class ChatDetailsScreen extends StatelessWidget {
       );
 
   Widget messageSent(context, MessageModel message) => Align(
-        alignment: AlignmentDirectional.centerStart,
+    alignment: AlignmentDirectional.centerEnd,
         child: Dismissible(
           key: UniqueKey(),
           onDismissed: (direction) {

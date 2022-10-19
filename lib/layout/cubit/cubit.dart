@@ -538,24 +538,24 @@ class AppCubit extends Cubit<AppStates> {
     });
 
     //receiver message
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(receiverId)
-        .collection("chats")
-        .doc(userModel!.uId)
-        .collection("messages")
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        element.reference.delete();
-        getMessages(receiverId: receiverId);
-        showToast(
-            msg: "comment deleted successfully", state: ToastStates.Success);
-      });
-      emit(AppSendMessageSuccessState());
-    }).catchError((error) {
-      emit(AppSendMessageFailureState());
-    });
+    // FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(receiverId)
+    //     .collection("chats")
+    //     .doc(userModel!.uId)
+    //     .collection("messages")
+    //     .get()
+    //     .then((value) {
+    //   value.docs.forEach((element) {
+    //     element.reference.delete();
+    //     getMessages(receiverId: receiverId);
+    //     showToast(
+    //         msg: "comment deleted successfully", state: ToastStates.Success);
+    //   });
+    //   emit(AppSendMessageSuccessState());
+    // }).catchError((error) {
+    //   emit(AppSendMessageFailureState());
+    // });
   }
 
   List<MessageModel> messages = [];
